@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["src/CheckServerSSL/CheckServerSSL.csproj", "src/CheckServerSSL/"]
 RUN dotnet restore "./src/CheckServerSSL/./CheckServerSSL.csproj"
@@ -15,7 +15,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     fi \
     && dotnet publish "src/CheckServerSSL/CheckServerSSL.csproj" -c Release -o /app/publish -r $RID --self-contained false
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
